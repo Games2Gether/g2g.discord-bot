@@ -57,3 +57,5 @@ typings/
 # dotenv environment variables file
 .env
 
+# app private config files
+src/config/*

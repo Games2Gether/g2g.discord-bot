@@ -1,0 +1,26 @@
+{
+  "name": "g2g.discord-bot",
+  "version": "1.0.0",
+  "description": "Games2Gether Discord BOT",
+  "main": "index.js",
+  "dependencies": {
+    "discord.js": "^11.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.11.0"
+  },
+  "scripts": {
+    "test": "npm run lint",
+    "lint": "eslint src *.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Games2Gether/g2g.discord-bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Games2Gether/g2g.discord-bot/issues"
+  },
+  "homepage": "https://github.com/Games2Gether/g2g.discord-bot#readme"
+}
