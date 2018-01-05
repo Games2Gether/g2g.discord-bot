@@ -1,19 +1,22 @@
 const fs = require('fs');
-const path = require('path');
 const discord = require('discord.js');
 const bot = new discord.Client();
 
-const environmentConfigPath = [__dirname, 'config', `${process.env.ENVIRONMENT}.json`].join(path.sep);
+const reload = require('./commands/reload');
 
-bot.commands = require('./commands');
+const configPath = `./config/${process.env.ENVIRONMENT}.json`;
+
 bot.config = require('./config/default.json');
 
-if (fs.existsSync(environmentConfigPath)) {
-  Object.assign(bot.config, require(environmentConfigPath));
+if (fs.existsSync(configPath)) {
+  Object.assign(bot.config, require(configPath));
 }
 
+bot.commands = {};
+reload.run(bot);
+
 bot.on('ready', () => {
-  console.warn(`Bot has started, with ${bot.users.size} users, in ${bot.channels.size} channels of ${bot.guilds.size} guilds.`);
+  console.warn(`Bot started, with ${bot.users.size} users, in ${bot.channels.size} channels of ${bot.guilds.size} guilds.`);
   bot.user.setGame(`on ${bot.guilds.size} servers`);
 });
 
@@ -25,6 +28,12 @@ bot.on('message', async message => {
   const command = args.shift().slice(bot.config.prefix.length).toLowerCase();
 
   if (!bot.commands[command]) return;
+
+  if (bot.commands[command].help.role) {
+    let role = message.guild.roles.find('name', bot.commands[command].help.role);
+
+    if (!role || !message.member.roles.has(role.id)) return;
+  }
 
   bot.commands[command].run(bot, message, args);
 });
